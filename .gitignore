@@ -1,0 +1,23 @@
+# IDE
+.idea
+.vscode
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux
+*~
+
+# Binary
+bin/*
+
+# Fonts
+fonts/*
+!fonts/.gitkeep
+
+# Generated font files
+internal/font/*
+!internal/font/.gitkeep
