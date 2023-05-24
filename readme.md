@@ -1,6 +1,6 @@
 # Go GUI Sample
 
-This project uses Go and Fyne to build a cross-platform application for managing and converting fonts. It specifically includes a process to download and update the M+ Fonts.
+This project uses Go and fyne to build a cross-platform application for managing and converting fonts. It specifically includes a process to download and update the M+ Fonts.
 
 ## Requirements
 - macOS 10.15+
@@ -19,7 +19,7 @@ brew install mingw-w64
 
 ### Prepare development environment
 
-Before you start, you need to prepare your development environment by installing the necessary Go packages and ensuring that the Fyne command-line tool is up to date:
+Before you start, you need to prepare your development environment by installing the necessary Go packages and ensuring that the fyne command-line tool is up-to-date:
 
 ```shell
 make prepare
@@ -51,7 +51,9 @@ make build-mac
 
 ### Updating Fonts
 
-To download and update the M+ Fonts:
+Update font resources using in programs.
+
+> **Note:** if there is no fonts in `fonts` directory, it will download M+2 fonts by default.
 
 ```shell
 make update-fonts
