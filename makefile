@@ -36,9 +36,9 @@ run:
 	@printf "🚀 Launching application... アプリケーションを起動しています...\n"
 	@go run ./cmd/convertor
 
-build-win: $(TARGETS_WIN)
+build-win: update-fonts $(TARGETS_WIN)
 
-build-mac: $(TARGETS_MAC)
+build-mac: update-fonts $(TARGETS_MAC)
 
 bin/windows/%.exe: cmd/%
 	@printf "📦 Building Windows binary... Windowsバイナリをビルドしています...\n"
