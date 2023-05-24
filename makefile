@@ -34,7 +34,7 @@ prepare:
 
 run:
 	@printf "🚀 Launching application... アプリケーションを起動しています...\n"
-	@go run ./cmd/convertor
+	@go run ./cmd/japanese-gui
 
 build-win: update-fonts $(TARGETS_WIN)
 
