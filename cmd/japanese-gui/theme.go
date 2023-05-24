@@ -1,9 +1,10 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/theme"
-	"image/color"
 
 	"go-gui-sample/internal/font"
 )
