@@ -5,10 +5,10 @@ CMDS := $(wildcard cmd/*)
 TARGETS_WIN := $(patsubst cmd/%, bin/windows/%.exe, $(CMDS))
 TARGETS_MAC := $(patsubst cmd/%, bin/darwin/%, $(CMDS))
 
-.PHONY: all update-fonts init build-win build-mac
+.PHONY: all update-fonts init build-win build-mac release clean clean-fonts
 
 all: prepare update-fonts build-win build-mac
-	@printf "🎉 All tasks done! すべてのタスクが完了しました!\n"
+	@printf "🎉 All build tasks done! すべてのビルドタスクが完了しました!\n"
 
 update-fonts: download-m-plus-fonts $(GENERATED_FONTS)
 
@@ -41,7 +41,7 @@ build-win: update-fonts $(TARGETS_WIN)
 build-mac: update-fonts $(TARGETS_MAC)
 
 bin/windows/%.exe: cmd/%
-	@printf "📦 Building Windows binary... Windowsバイナリをビルドしています...\n"
+	@printf "📦 [%s] Building Windows binary... Windowsバイナリをビルドしています...\n" $<
 	@if [ -z "$(shell which x86_64-w64-mingw32-gcc)" ]; then \
 		printf "🚫 x86_64-w64-mingw32-gcc not found. Please install it first. x86_64-w64-mingw32-gccが見つかりません。先にインストールしてください。\n"; \
 		printf "🍺 brew install mingw-w64\n"; \
@@ -50,7 +50,7 @@ bin/windows/%.exe: cmd/%
 	@CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -ldflags -H=windowsgui -o $@ ./$<
 
 bin/darwin/%: cmd/%
-	@printf "📦 Building macOS binary... macOSバイナリをビルドしています...\n"
+	@printf "📦 [%s] Building macOS binary... macOSバイナリをビルドしています...\n" $<
 	@go build -o $@ ./$<
 
 clean:
@@ -62,3 +62,20 @@ clean-fonts:
 	@printf "🗑️ Removing all downloaded fonts... ダウンロードされたフォントを削除しています...\n"
 	@rm fonts/Mplus2-Regular.ttf
 	@rm fonts/Mplus2-Bold.ttf
+
+release:
+	@$(MAKE) clean
+	@$(MAKE) clean-fonts
+	@$(MAKE) all
+	@rm -rf dist
+	@mkdir -p dist
+	@printf "✳️ [japanese-gui] Creating release app... リリースアプリを作成しています...\n"
+	@fyne package -os darwin -icon assets/icon.png -executable ./bin/darwin/japanese-gui -name "Japanese GUI" -appID "com.fang2hou.japanesegui" -appVersion 0.0.1 -release
+	@mv Japanese\ GUI.app dist/
+	@cp bin/windows/japanese-gui.exe dist/
+	@cp assets/icon.ico cmd/japanese-gui/app.ico
+	@echo 'ID ICON "app.ico"' > cmd/japanese-gui/app.rc
+	@cd cmd/japanese-gui && x86_64-w64-mingw32-windres -O coff app.rc -o app.syso
+	@cd cmd/japanese-gui && CC=x86_64-w64-mingw32-gcc GOARCH=amd64 fyne package -os windows -icon ../../assets/icon.png -executable ../../dist/japanese-gui.exe -name "Japanese GUI" -appID japanese-gui.exe -appVersion 0.0.1
+	@cd cmd/japanese-gui && rm app.ico app.rc app.syso
+	@printf "🎉 [japanese-gui] Release app created! リリースアプリが作成されました!\n"
