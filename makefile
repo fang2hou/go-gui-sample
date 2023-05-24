@@ -42,6 +42,11 @@ build-mac: update-fonts $(TARGETS_MAC)
 
 bin/windows/%.exe: cmd/%
 	@printf "📦 Building Windows binary... Windowsバイナリをビルドしています...\n"
+	@if [ -z "$(shell which x86_64-w64-mingw32-gcc)" ]; then \
+		printf "🚫 x86_64-w64-mingw32-gcc not found. Please install it first. x86_64-w64-mingw32-gccが見つかりません。先にインストールしてください。\n"; \
+		printf "🍺 brew install mingw-w64\n"; \
+		exit 1; \
+	fi
 	@CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -ldflags -H=windowsgui -o $@ ./$<
 
 bin/darwin/%: cmd/%
