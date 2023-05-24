@@ -57,6 +57,7 @@ clean:
 	@printf "🗑️ Removing all generated files... 生成されたファイルを削除しています...\n"
 	@rm -rf internal/font/*.go
 	@rm -rf bin
+	@rm -rf dist
 
 clean-fonts:
 	@printf "🗑️ Removing all downloaded fonts... ダウンロードされたフォントを削除しています...\n"
